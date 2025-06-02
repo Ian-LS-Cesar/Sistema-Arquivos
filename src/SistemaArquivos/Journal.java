@@ -19,18 +19,18 @@ public class Journal {
                 arquivoJournal.createNewFile();
             }
         } catch (IOException e){
-            System.out.println("Erro ao criar Journal: " + e.getMessage());
+            System.err.println("Erro ao criar Journal: " + e.getMessage());
         }
     }
 
-    public synchronized void adicionarEntrada(String entrada){
-        try (FileWriter fw = new FileWriter(arquivoJournal, true);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter saida = new PrintWriter(bw)) {
-            saida.println();
-            saida.flush();
+    // Exemplo de método correto para Journal
+    public void adicionarEntrada(String entrada) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoJournal, true))) {
+            writer.write(entrada);
+            writer.newLine();
+            writer.flush();
         } catch (IOException e) {
-            System.out.println("Erro na adição de entrada do Journal: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -39,7 +39,7 @@ public class Journal {
         try {
             entradas = Files.readAllLines(arquivoJournal.toPath());
         } catch (IOException e) {
-            System.out.println("Erro ao ler entrada do Journal: " + e.getMessage());
+            System.err.println("Erro ao ler entrada do Journal: " + e.getMessage());
         }
         return entradas;
     }

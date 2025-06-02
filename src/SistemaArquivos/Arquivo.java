@@ -14,7 +14,7 @@ public class Arquivo extends Entrada{
             this.conteudo = conteudo;
         }
         
-        this.tamanho = tamanho;
+        this.tamanho = this.conteudo.getBytes().length;
     }
 
     public String getConteudo(){

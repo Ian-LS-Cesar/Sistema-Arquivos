@@ -10,7 +10,7 @@ public class Diretorio extends Entrada{
     private List<Arquivo> arquivos = new LinkedList<>();
     private List<Diretorio> subPastas = new LinkedList<>();
 
-    public Diretorio(String nome, LocalDateTime criacao, Diretorio pai, List<Arquivo> arquivos, List<Diretorio> subPastas) {
+    public Diretorio(String nome, LocalDateTime criacao, Diretorio pai) {
         super(nome, criacao, pai);
         this.arquivos = new LinkedList<>();
         this.subPastas = new LinkedList<>();
