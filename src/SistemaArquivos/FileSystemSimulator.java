@@ -85,7 +85,7 @@ public class FileSystemSimulator {
             }
 
             if (proximaPasta == null) {
-                System.out.println("Caminho inválido em : " + caminhoCompleto);
+                System.err.println("Erro criar_arquivo: Caminho Inválido " + caminhoCompleto);
                 return;
             }
             temp = proximaPasta;
@@ -94,7 +94,7 @@ public class FileSystemSimulator {
         String nomeArquivo = parametrosCaminho[parametrosCaminho.length - 1];
         for (Arquivo arquivo : temp.getArquivos()) {
             if (arquivo.getNome().equals(nomeArquivo)) {
-                System.out.println("Arquivo com o nome " + nomeArquivo + " já existente");
+                System.err.println("Erro criar_arquivo: Arquivo com o nome " + nomeArquivo + " já existente");
                 return;
             }
         }
@@ -117,12 +117,12 @@ public class FileSystemSimulator {
     }
 
     private void renomearArquivoPorCaminho(String caminhoCompleto, String novoNome, boolean entradaJournal) {
-        if (entradaJournal){
+        if (entradaJournal) {
             journal.adicionarEntrada("renomear_arquivo" + caminhoCompleto + " " + novoNome);
         }
 
         String caminho;
-        if (caminhoCompleto.startsWith("/")){
+        if (caminhoCompleto.startsWith("/")) {
             caminho = caminhoCompleto.substring(1);
         } else {
             caminho = caminhoCompleto;
@@ -132,21 +132,21 @@ public class FileSystemSimulator {
         Diretorio temp = root;
 
         int indicePastaAtual = 0;
-        if (parametrosCaminho.length > 0 && parametrosCaminho[0].equals(root.getNome())){
+        if (parametrosCaminho.length > 0 && parametrosCaminho[0].equals(root.getNome())) {
             indicePastaAtual = 1;
         }
 
-        for (int i = indicePastaAtual; i < parametrosCaminho.length - 1; i++){
+        for (int i = indicePastaAtual; i < parametrosCaminho.length - 1; i++) {
             Diretorio proximaPasta = null;
-            for (Diretorio subPasta : temp.getSubPastas()){
-                if (subPasta.getNome().equals(parametrosCaminho[i])){
+            for (Diretorio subPasta : temp.getSubPastas()) {
+                if (subPasta.getNome().equals(parametrosCaminho[i])) {
                     proximaPasta = subPasta;
                     break;
                 }
             }
 
-            if (proximaPasta == null){
-                System.out.println("Erro na renomeação do arquivo: " + caminhoCompleto);
+            if (proximaPasta == null) {
+                System.err.println("Erro renomear_arquivo: " + caminhoCompleto);
                 return;
             }
 
@@ -154,8 +154,8 @@ public class FileSystemSimulator {
         }
 
         String antigo = parametrosCaminho[parametrosCaminho.length - 1];
-        for (Arquivo arquivo : temp.getArquivos()){
-            if (arquivo.getNome().equals(antigo)){
+        for (Arquivo arquivo : temp.getArquivos()) {
+            if (arquivo.getNome().equals(antigo)) {
                 arquivo.setNome(novoNome);
                 break;
             }
@@ -177,12 +177,12 @@ public class FileSystemSimulator {
     }
 
     private void copiarArquivoPorCaminho(String caminhoOrigem, String caminhoDestino, boolean entradaJournal) {
-        if (entradaJournal){
+        if (entradaJournal) {
             journal.adicionarEntrada("copiar_arquivo " + caminhoOrigem + " " + caminhoDestino);
         }
 
         String origem;
-        if (caminhoOrigem.startsWith("/")){
+        if (caminhoOrigem.startsWith("/")) {
             origem = caminhoOrigem.substring(1);
         } else {
             origem = caminhoOrigem;
@@ -191,20 +191,20 @@ public class FileSystemSimulator {
         Diretorio tempOrigem = root;
 
         int indiceOrigem = 0;
-        if (parametrosOrigem.length > 0 && parametrosOrigem[0].equals(root.getNome())){
+        if (parametrosOrigem.length > 0 && parametrosOrigem[0].equals(root.getNome())) {
             indiceOrigem = 1;
         }
 
-        for (int i = indiceOrigem; i < parametrosOrigem.length - 1; i++){
+        for (int i = indiceOrigem; i < parametrosOrigem.length - 1; i++) {
             Diretorio proximaPasta = null;
-            for (Diretorio subPasta: tempOrigem.getSubPastas()) {
-                if (subPasta.getNome().equals(parametrosOrigem[i])){
+            for (Diretorio subPasta : tempOrigem.getSubPastas()) {
+                if (subPasta.getNome().equals(parametrosOrigem[i])) {
                     proximaPasta = subPasta;
                     break;
                 }
             }
-            if (proximaPasta == null){
-                System.out.println("Erro ao copiar arquivo: Origem inválida" + caminhoOrigem);
+            if (proximaPasta == null) {
+                System.err.println("Erro copiar_arquivo: Origem inválida" + caminhoOrigem);
                 return;
             }
             tempOrigem = proximaPasta;
@@ -212,18 +212,18 @@ public class FileSystemSimulator {
 
         Arquivo arquivoOrigem = null;
         String nomeArquivo = parametrosOrigem[parametrosOrigem.length - 1];
-        for (Arquivo arquivo : tempOrigem.getArquivos()){
-            if (arquivo.getNome().equals(nomeArquivo)){
+        for (Arquivo arquivo : tempOrigem.getArquivos()) {
+            if (arquivo.getNome().equals(nomeArquivo)) {
                 arquivoOrigem = arquivo;
                 break;
             }
         }
-        if (arquivoOrigem == null){
+        if (arquivoOrigem == null) {
             return;
         }
 
         String destino;
-        if (caminhoDestino.startsWith("/")){
+        if (caminhoDestino.startsWith("/")) {
             destino = caminhoDestino.substring(1);
         } else {
             destino = caminhoDestino;
@@ -232,38 +232,90 @@ public class FileSystemSimulator {
         Diretorio tempDestino = root;
 
         int indiceDestino = 0;
-        if (parametrosDestino.length > 0 && parametrosDestino[0].equals(root.getNome())){
+        if (parametrosDestino.length > 0 && parametrosDestino[0].equals(root.getNome())) {
             indiceDestino = 1;
         }
 
-        for (int i = indiceDestino; i < parametrosDestino.length; i++){
+        for (int i = indiceDestino; i < parametrosDestino.length; i++) {
             Diretorio proximaPasta = null;
-            for (Diretorio subPasta : tempDestino.getSubPastas()){
-                if (subPasta.getNome().equals(parametrosDestino[i])){
-                proximaPasta = subPasta;
-                break;
+            for (Diretorio subPasta : tempDestino.getSubPastas()) {
+                if (subPasta.getNome().equals(parametrosDestino[i])) {
+                    proximaPasta = subPasta;
+                    break;
                 }
             }
 
-            if (proximaPasta == null){
-                System.out.println("Erro ao copiar arquivo: Destino Inválido" + caminhoDestino);
+            if (proximaPasta == null) {
+                System.err.println("Erro copiar_arquivo: Destino Inválido" + caminhoDestino);
                 return;
             }
             tempDestino = proximaPasta;
         }
 
-        Arquivo copia = new Arquivo(arquivoOrigem.getNome(), LocalDateTime.now(), tempDestino, arquivoOrigem.getConteudo(), arquivoOrigem.getConteudo().length());
+        Arquivo copia = new Arquivo(arquivoOrigem.getNome(), LocalDateTime.now(), tempDestino,
+                arquivoOrigem.getConteudo(), arquivoOrigem.getConteudo().length());
         tempDestino.getArquivos().add(copia);
 
     }
 
     // Apagar Arquivo
-    private void apagarArquivo() {
-
+    private void apagarArquivo(String nome) {
+        String caminho;
+        if (pastaAtual.buscarCaminho().equals("/")) {
+            caminho = "/" + nome;
+        } else {
+            caminho = pastaAtual.buscarCaminho() + "/" + nome;
+        }
+        apagarArquivoPorCaminho(caminho, true);
+        salvar();
     }
 
-    private void apagarArquivoPorCaminho() {
+    private void apagarArquivoPorCaminho(String caminhoCompleto, boolean entradaJournal) {
+        if (entradaJournal) {
+            journal.adicionarEntrada("excluir_arquivo " + caminhoCompleto);
+        }
 
+        String caminho;
+        if (caminhoCompleto.startsWith("/")) {
+            caminho = caminhoCompleto.substring(1);
+        } else {
+            caminho = caminhoCompleto;
+        }
+        String[] parametrosCaminho = caminho.split("/");
+        Diretorio temp = root;
+
+        int indicePastaAtual = 0;
+        if (parametrosCaminho.length > 0 && parametrosCaminho[0].equals(root.getNome())) {
+            indicePastaAtual = 1;
+        }
+
+        for (int i = indicePastaAtual; i < parametrosCaminho.length - 1; i++) {
+            Diretorio proximaPasta = null;
+            for (Diretorio subPasta : temp.getSubPastas()) {
+                if (subPasta.getNome().equals(parametrosCaminho[i])) {
+                    proximaPasta = subPasta;
+                    break;
+                }
+            }
+
+            if (proximaPasta == null) {
+                System.err.println("Erro excluir_arquivo: Caminho inválido " + caminhoCompleto);
+                return;
+            }
+            temp = proximaPasta;
+        }
+
+        String nomeAlvo = parametrosCaminho[parametrosCaminho.length - 1];
+        Arquivo remover = null;
+        for (Arquivo arquivo : temp.getArquivos()) {
+            if (arquivo.getNome().equals(nomeAlvo)) {
+                remover = arquivo;
+                break;
+            }
+        }
+        if (remover != null) {
+            temp.getArquivos().remove(remover);
+        }
     }
 
     // Comandos para Pastas
@@ -309,7 +361,7 @@ public class FileSystemSimulator {
             }
 
             if (proximaPasta == null) {
-                System.out.println("Caminho inválido em : " + caminhoCompleto);
+                System.err.println("Erro criar_pasta: Caminho Inválido" + caminhoCompleto);
                 return;
             }
             temp = proximaPasta;
@@ -318,7 +370,7 @@ public class FileSystemSimulator {
         String nomeNovaPasta = parametrosCaminho[parametrosCaminho.length - 1];
         for (Diretorio subPasta : temp.getSubPastas()) {
             if (subPasta.getNome().equals(nomeNovaPasta)) {
-                System.out.println("Pasta com o nome " + nomeNovaPasta + " já existente");
+                System.err.println("Erro criar_pasta: Pasta com o nome " + nomeNovaPasta + " já existente");
                 return;
             }
         }
@@ -329,20 +381,115 @@ public class FileSystemSimulator {
     }
 
     // Renomear Pasta
-    private void renomearDiretorio() {
-
+    private void renomearDiretorio(String nomeOriginal, String novoNome) {
+        String caminho;
+        if (pastaAtual.buscarCaminho().equals("/")) {
+            caminho = "/" + nomeOriginal;
+        } else {
+            caminho = pastaAtual.buscarCaminho() + "/" + nomeOriginal;
+        }
+        renomearDiretorioPorCaminho(caminho, novoNome, true);
     }
 
-    private void renomearDiretorioPorCaminho() {
+    private void renomearDiretorioPorCaminho(String caminhoCompleto, String novoNome, boolean entradaJournal) {
+        if (entradaJournal) {
+            journal.adicionarEntrada("renomear_pasta " + caminhoCompleto + " " + novoNome);
+        }
 
+        String caminho;
+        if (caminhoCompleto.startsWith("/")) {
+            caminho = caminhoCompleto.substring(1);
+        } else {
+            caminho = caminhoCompleto;
+        }
+        String[] parametrosCaminho = caminho.split("/");
+        Diretorio temp = root;
+
+        int indicePastaAtual = 0;
+        if (parametrosCaminho.length > 0 && parametrosCaminho[0].equals(root.getNome())) {
+            indicePastaAtual = 1;
+        }
+
+        for (int i = indicePastaAtual; i < parametrosCaminho.length - 1; i++) {
+            Diretorio proximaPasta = null;
+            for (Diretorio subPasta : temp.getSubPastas()) {
+                if (subPasta.getNome().equals(parametrosCaminho[i])) {
+                    proximaPasta = subPasta;
+                    break;
+                }
+            }
+            if (proximaPasta == null) {
+                System.err.println("Erro renomear_pasta: Caminho Inválido " + caminhoCompleto);
+                return;
+            }
+            temp = proximaPasta;
+        }
+
+        String antigo = parametrosCaminho[parametrosCaminho.length - 1];
+        for (Diretorio subPasta : temp.getSubPastas()) {
+            if (subPasta.getNome().equals(antigo)) {
+                subPasta.setNome(novoNome);
+                break;
+            }
+        }
     }
 
     // Apagar Pasta
-    private void apagarDiretorio() {
+    private void apagarDiretorio(String nome) {
+        String caminho;
+        if (pastaAtual.buscarCaminho().equals("/")) {
+            caminho = "/" + nome;
+        } else {
+            caminho = pastaAtual.buscarCaminho() + "/" + nome;
+        }
+        apagarDiretorioPorCaminho(caminho, true);
+        salvar();
 
     }
 
-    private void apagarDiretorioPorCaminho() {
+    private void apagarDiretorioPorCaminho(String caminhoCompleto, boolean entradaJournal) {
+        if (entradaJournal) {
+            journal.adicionarEntrada("excluir_pasta " + caminhoCompleto);
+        }
+        String caminho;
+        if (caminhoCompleto.startsWith("/")) {
+            caminho = caminhoCompleto.substring(1);
+        } else {
+            caminho = caminhoCompleto;
+        }
+        String[] parametrosCaminho = caminho.split("/");
+        Diretorio temp = root;
+
+        int indicePastaAtual = 0;
+        if (parametrosCaminho.length > 0 && parametrosCaminho[0].equals(root.getNome())) {
+            indicePastaAtual = 1;
+        }
+
+        for (int i = indicePastaAtual; i < parametrosCaminho.length - 1; i++) {
+            Diretorio proximaPasta = null;
+            for (Diretorio subPasta : temp.getSubPastas()) {
+                if (subPasta.getNome().equals(parametrosCaminho[i])) {
+                    proximaPasta = subPasta;
+                    break;
+                }
+            }
+            if (proximaPasta == null) {
+                System.err.println("Erro excluir_pasta: Caminho Inválido " + caminhoCompleto);
+                return;
+            }
+            temp = proximaPasta;
+        }
+        String nomeAlvo = parametrosCaminho[parametrosCaminho.length - 1];
+        Diretorio remover = null;
+        for (Diretorio subPasta : temp.getSubPastas()) {
+            if (subPasta.getNome().equals(nomeAlvo)) {
+                remover = subPasta;
+                break;
+            }
+        }
+        if (remover != null) {
+            temp.getSubPastas().remove(remover);
+        }
 
     }
     // Comandos do Sistema de Arquivos
@@ -372,35 +519,23 @@ public class FileSystemSimulator {
         String comando = parametros[0];
 
         switch (comando) {
-            case "criar_arquivo":
+            case "criar_arquivo" ->
                 criarArquivoPorCaminho(parametros[1], parametros.length > 2 ? parametros[2] : "", false);
-                break;
-            case "renomear_arquivo":
-                renomearArquivoPorCaminho(parametros[1], parametros[2], false);
-                break;
-            case "copiar_arquivo":
-                copiarArquivoPorCaminho(parametros[1], parametros[2], false);
-                break;
-            /* 
-                case "apagar_arquivo":
-                apagarArquivoPorCaminho(parametros[1], false);
-                break;
-            */
-            case "criar_pasta":
-                criarDiretorioPorCaminho(parametros[1], false);
-                break;
-            /* 
-            case "renomear_pasta":
-                renomearDiretorioPorCaminho(parametros[1], false);
-                break;
-            
-            case "apagar_pasta":
-                apagarDiretorioPorCaminho(parametros[1], false);
-                break;
-            */
-            default:
-                System.err.println("Comando desconhecido: " + entrada);
+
+            case "renomear_arquivo" -> renomearArquivoPorCaminho(parametros[1], parametros[2], false);
+
+            case "copiar_arquivo" -> copiarArquivoPorCaminho(parametros[1], parametros[2], false);
+
+            case "apagar_arquivo" -> apagarArquivoPorCaminho(parametros[1], false);
+
+            case "criar_pasta" -> criarDiretorioPorCaminho(parametros[1], false);
+
+            case "renomear_pasta" -> renomearDiretorioPorCaminho(parametros[1], parametros[2], false);
+
+            case "apagar_pasta" -> apagarDiretorioPorCaminho(parametros[1], false);
+            default -> System.err.println("Comando desconhecido: " + entrada);
         }
+
     }
 
     // Carregar Entradas do Journal
@@ -411,8 +546,7 @@ public class FileSystemSimulator {
             System.out.println("Sistema de Arquivos iniciado!");
         } catch (Exception e) {
             e.printStackTrace();
-            ;
-            System.out.println("Erro ao carregar sistema. Tetando novamente!");
+            System.err.println("Erro ao carregar sistema. Tentando novamente!");
             this.root = new Diretorio("home", LocalDateTime.now(), null, new java.util.LinkedList<>(),
                     new java.util.LinkedList<>());
             this.pastaAtual = root;
