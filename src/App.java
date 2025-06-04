@@ -94,7 +94,7 @@ public class App {
                         "   - renomear_arquivo nomeArquivo novoNome     -> Renomear arquivo\n" +
                         "   - copiar_arquivo nomeArquivo pastaDestino   -> Copiar arquivo para pasta\n" +
                         "   - excluir_arquivo nomeArquivo               -> Excluir arquivo\n" +
-                        "   - ler_arquivo nomeArquivo                   -> Mostrar conteúdo do arquivo\n" +
+                        "   - ler_arquivo nomeArquivo                   -> Ler o conteúdo do arquivo\n" +
                         "   - criar_pasta nomePasta                     -> Criar pasta\n" +
                         "   - renomear_pasta nomePasta novoNome         -> Renomear pasta\n" +
                         "   - excluir_pasta nomePasta                   -> Excluir pasta\n" +
