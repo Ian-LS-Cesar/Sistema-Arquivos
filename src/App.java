@@ -1,4 +1,3 @@
-
 import SistemaArquivos.*;
 import java.util.Scanner;
 
@@ -75,6 +74,19 @@ public class App {
                 case "listar":
                     simulador.listarArquivosPasta();
                     break;
+                case "ler_arquivo":
+                    if (!parametro.isEmpty()) {
+                        String conteudo = simulador.lerConteudoArquivo(parametro);
+                        if (conteudo != null) {
+                            System.out.println("Conteúdo de " + parametro + ":");
+                            System.out.println(conteudo);
+                        } else {
+                            System.out.println("Arquivo não encontrado ou caminho inválido.");
+                        }
+                    } else {
+                        System.out.println("Formato: ler_arquivo nomeArquivo");
+                    }
+                    break;
                 case "ajuda":
                     System.out.println(
                         "Comandos disponíveis:\n" +
@@ -82,6 +94,7 @@ public class App {
                         "   - renomear_arquivo nomeArquivo novoNome     -> Renomear arquivo\n" +
                         "   - copiar_arquivo nomeArquivo pastaDestino   -> Copiar arquivo para pasta\n" +
                         "   - excluir_arquivo nomeArquivo               -> Excluir arquivo\n" +
+                        "   - ler_arquivo nomeArquivo                   -> Mostrar conteúdo do arquivo\n" +
                         "   - criar_pasta nomePasta                     -> Criar pasta\n" +
                         "   - renomear_pasta nomePasta novoNome         -> Renomear pasta\n" +
                         "   - excluir_pasta nomePasta                   -> Excluir pasta\n" +

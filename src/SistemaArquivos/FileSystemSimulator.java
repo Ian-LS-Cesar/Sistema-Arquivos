@@ -316,6 +316,57 @@ public class FileSystemSimulator {
         }
     }
 
+    // Ler Arquivo
+    public String lerConteudoArquivo(String nome) {
+        String caminho;
+        if (pastaAtual.buscarCaminho().equals("/")) {
+            caminho = "/" + nome;
+        } else {
+            caminho = pastaAtual.buscarCaminho() + "/" + nome;
+        }
+        return lerConteudoArquivoPorCaminho(caminho);
+    }
+
+    private String lerConteudoArquivoPorCaminho(String caminhoCompleto) {
+        String caminho;
+        if (caminhoCompleto.startsWith("/")) {
+            caminho = caminhoCompleto.substring(1);
+        } else {
+            caminho = caminhoCompleto;
+        }
+        String[] parametrosCaminho = caminho.split("/");
+        Diretorio temp = root;
+
+        int indicePastaAtual = 0;
+        if (parametrosCaminho.length > 0 && parametrosCaminho[0].equals(root.getNome())) {
+            indicePastaAtual = 1;
+        }
+
+        for (int i = indicePastaAtual; i < parametrosCaminho.length - 1; i++) {
+            Diretorio proximaPasta = null;
+            for (Diretorio subPasta : temp.getSubPastas()) {
+                if (subPasta.getNome().equals(parametrosCaminho[i])) {
+                    proximaPasta = subPasta;
+                    break;
+                }
+            }
+            if (proximaPasta == null) {
+                System.err.println("Erro ler_arquivo: Caminho Inválido " + caminhoCompleto);
+                return null;
+            }
+            temp = proximaPasta;
+        }
+
+        String nomeArquivo = parametrosCaminho[parametrosCaminho.length - 1];
+        for (Arquivo arquivo : temp.getArquivos()) {
+            if (arquivo.getNome().equals(nomeArquivo)) {
+                return arquivo.getConteudo();
+            }
+        }
+        System.err.println("Erro ler_arquivo: Arquivo não encontrado " + nomeArquivo);
+        return null;
+    }
+
     // Comandos para Pastas
     // Criar Pasta
     public void criarDiretorio(String nome) {
@@ -492,12 +543,13 @@ public class FileSystemSimulator {
 
     // Listar Arquivos e Pastas do Diretório Atual
     public void listarArquivosPasta() {
-        System.out.println("\nArquivos em " + pastaAtual.getNome() + ":");
+        System.out.println("\nDiretório: " + pastaAtual.getNome());
+        System.out.println("\n  Arquivos:");
         for (Arquivo arquivo : pastaAtual.getArquivos()) {
-            System.out.println("    - " + arquivo.getNome());
+            System.out.println("    - " + arquivo.getNome() + "     Tamanho: " + arquivo.getTamanho() + "B");
         }
 
-        System.out.println("Subpastas em " + pastaAtual.getNome() + ":");
+        System.out.println("\n  Pastas:");
         for (Diretorio pasta : pastaAtual.getSubPastas()) {
             System.out.println("    - " + pasta.getNome());
         }
@@ -604,4 +656,6 @@ public class FileSystemSimulator {
             e.printStackTrace();
         }
     }
+
+
 }
