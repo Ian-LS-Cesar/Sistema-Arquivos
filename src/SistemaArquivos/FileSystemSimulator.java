@@ -604,7 +604,16 @@ public class FileSystemSimulator {
     }
     // Executar comandos listados no Journal
     private void retomarEntrada(String entrada) {
-        String[] parametros = entrada.split(" ", 3);
+        // Remove o timestamp do início, se houver
+        int fechaColchete = entrada.indexOf("] ");
+        String comandoLinha;
+        if (fechaColchete != -1) {
+            comandoLinha = entrada.substring(fechaColchete + 2); // pula "] "
+        } else {
+            comandoLinha = entrada;
+        }
+
+        String[] parametros = comandoLinha.split(" ", 3);
         String comando = parametros[0];
 
         switch (comando) {

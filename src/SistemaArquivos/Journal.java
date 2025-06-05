@@ -2,6 +2,8 @@ package SistemaArquivos;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,8 @@ public class Journal {
     // Exemplo de método correto para Journal
     public void adicionarEntrada(String entrada) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivoJournal, true))) {
-            writer.write(entrada);
+            String dataHora = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            writer.write("[" + dataHora + "] " + entrada);
             writer.newLine();
             writer.flush();
         } catch (IOException e) {
